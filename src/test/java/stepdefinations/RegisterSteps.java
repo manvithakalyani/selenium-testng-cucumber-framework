@@ -99,5 +99,6 @@ public class RegisterSteps {
 	            throw new AssertionError("Expected error message containing: '" + expectedMessage + "' or 'Wrong email', but found: '" + actualMessage + "'");
 	        }
 	    }
-
+	    
+	   
 }
