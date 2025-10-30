@@ -16,12 +16,7 @@ import utils.DriverFactory;
 public class BaseClass
     
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-
+   
 	    private WebDriver driver;
 	    private MainPage main;
 	   

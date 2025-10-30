@@ -2,6 +2,7 @@ package stepdefinations;
 
 
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import utils.BaseClass;
 
 public class Mainpagestepdef {
@@ -11,6 +12,10 @@ public class Mainpagestepdef {
 		    appTest.setUp();
 	        appTest.launch();
 	       
+    }
+	@Then("close after landing on page")
+    public void closeBrowser() {
+        appTest.tearDown();   // Calls the tearDown method which quits the driver
     }
 
 }

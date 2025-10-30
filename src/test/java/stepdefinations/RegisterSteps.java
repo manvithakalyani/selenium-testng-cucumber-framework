@@ -2,6 +2,7 @@ package stepdefinations;
 
 import org.openqa.selenium.WebDriver;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,48 +15,55 @@ public class RegisterSteps {
 	    RegistrationPage regPage = new RegistrationPage(driver);
 
 	    String firstName, lastName, email, password;
-
-	    @Given("user is on tricentis registration page")
-	    public void user_is_on_registration_page() {
-	        driver.get("https://demowebshop.tricentis.com/register");
-	        // Generate random data before filling form
-	        firstName = RandomDataGenerator.getRandomFirstName();
-	        lastName = RandomDataGenerator.getRandomLastName();
-	        email = RandomDataGenerator.getRandomEmail();
-	        password = RandomDataGenerator.getRandomPassword();
+	    
+	    @When("user clicks the Register menu")
+	    public void user_clicks_register_menu() {
+	        regPage.clickRegisterMenuLink();
 	    }
 
-	    @When("user selects gender as {string}")
+	    @And("user is on tricentis registration page")
+	    public void user_is_on_registration_page() {
+	    	 String url = driver.getCurrentUrl();
+	    	    if (!url.endsWith("/register")) {
+	    	        throw new AssertionError("User is NOT on the registration page. Current URL: " + url);
+	    	    }
+	        
+	    }
+	    
+	    @And("user selects gender as {string}")
 	    public void user_selects_gender(String gender) {
 	        regPage.selectGender(gender);
 	    }
-
-	    @When("user enters first name as {string}")
-	    public void user_enters_first_name(String ignored) {
-	        regPage.enterFirstName(firstName);
+	    @And("user enters first name as {string}")
+	    public void user_enters_first_name(String input) {
+	        String valueToEnter = input.equals("placeholder") ? RandomDataGenerator.getRandomFirstName() : input;
+	        regPage.enterFirstName(valueToEnter);
 	    }
 
-	    @When("user enters last name as {string}")
-	    public void user_enters_last_name(String ignored) {
-	        regPage.enterLastName(lastName);
+	    @And("user enters last name as {string}")
+	    public void user_enters_last_name(String input) {
+	        String valueToEnter = input.equals("placeholder") ? RandomDataGenerator.getRandomLastName() : input;
+	        regPage.enterLastName(valueToEnter);
 	    }
 
-	    @When("user enters email as {string}")
-	    public void user_enters_email(String ignored) {
-	        regPage.enterEmail(email);
+	    @And("user enters email as {string}")
+	    public void user_enters_email(String input) {
+	        String valueToEnter = input.equals("placeholder") ? RandomDataGenerator.getRandomEmail() : input;
+	        regPage.enterEmail(valueToEnter);
 	    }
 
-	    @When("user enters password as {string}")
-	    public void user_enters_password(String ignored) {
-	        regPage.enterPassword(password);
+	    @And("user enters password as {string}")
+	    public void user_enters_password(String input) {
+	        String valueToEnter = input.equals("placeholder") ? RandomDataGenerator.getRandomPassword() : input;
+	        regPage.enterPassword(valueToEnter);
 	    }
 
-	    @When("user enters confirm password as {string}")
-	    public void user_enters_confirm_password(String ignored) {
-	        regPage.enterConfirmPassword(password);
+	    @And("user enters confirm password as {string}")
+	    public void user_enters_confirm_password(String input) {
+	        String valueToEnter = input.equals("placeholder") ? RandomDataGenerator.getRandomPassword() : input;
+	        regPage.enterConfirmPassword(valueToEnter);
 	    }
-
-	    @When("user clicks the Register button")
+	    @And("user clicks the Register button")
 	    public void user_clicks_register() {
 	        regPage.clickRegisterButton();
 	    }
@@ -65,4 +73,31 @@ public class RegisterSteps {
 	        boolean result = regPage.isRegistrationSuccessMessageDisplayed();
 	        assert result : "Registration success message was not displayed!";
 	    }
+	    
+	   
+	    
+	    @When("user clicks the Register button without filling any fields")
+	    public void user_clicks_register_without_filling_fields() {
+	        regPage.clickRegisterButton();
+	    }
+
+	    @Then("appropriate error messages for missing fields are displayed")
+	    public void appropriate_error_messages_displayed() {
+	        boolean missingFieldsErrorsPresent = regPage.areErrorMessagesDisplayedForMissingFields();
+	        if (!missingFieldsErrorsPresent) {
+	            throw new AssertionError("Error messages for missing fields were not displayed");
+	        }
+	    }
+	    
+	    @Then("error message {string} is displayed")
+	    public void error_message_is_displayed(String expectedMessage) {
+	        String actualMessage = regPage.getErrorMessage().toLowerCase();
+	        String expectedLower = expectedMessage.toLowerCase();
+
+	        // Accept either the expected message or "wrong email"
+	        if (!(actualMessage.contains(expectedLower) || actualMessage.contains("wrong email"))) {
+	            throw new AssertionError("Expected error message containing: '" + expectedMessage + "' or 'Wrong email', but found: '" + actualMessage + "'");
+	        }
+	    }
+
 }

@@ -1,12 +1,16 @@
 package pages;
 
+import java.util.NoSuchElementException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class RegistrationPage {
 	  private WebDriver driver;
 
 	    // Locators
+	    private By registerMenuLink = By.cssSelector("a.ico-register");
 	    private By genderMaleRadio = By.id("gender-male");
 	    private By genderFemaleRadio = By.id("gender-female");
 	    private By firstNameInput = By.id("FirstName");
@@ -16,10 +20,22 @@ public class RegistrationPage {
 	    private By confirmPasswordInput = By.id("ConfirmPassword");
 	    private By registerButton = By.id("register-button");
 	    private By registrationSuccessMessage = By.cssSelector(".result");
-
+	    private By errorMessages = By.cssSelector(".field-validation-error");
+ 	    private By validationErrorMessage = By.cssSelector(".field-validation-error, .validation-summary-errors li");
+	    
 	    // Constructor
 	    public RegistrationPage(WebDriver driver) {
 	        this.driver = driver;
+	    }
+	    
+	   // WebElement getter (optional, for advanced patterns)
+	    public WebElement getRegisterMenuLink() {
+	        return driver.findElement(registerMenuLink);
+	    }
+
+	    // Action: click the Register menu link
+	    public void clickRegisterMenuLink() {
+	        driver.findElement(registerMenuLink).click();
 	    }
 
 	    // Methods to interact with elements
@@ -63,4 +79,17 @@ public class RegistrationPage {
 	    public String getRegistrationSuccessMessage() {
 	        return driver.findElement(registrationSuccessMessage).getText();
 	    }
+	    public boolean areErrorMessagesDisplayedForMissingFields() {
+	        // Checks if at least one validation error is shown for required fields
+	        return !driver.findElements(By.cssSelector(".field-validation-error")).isEmpty();
+	    }
+	    
+	    public String getErrorMessage() {
+	        try {
+	            return driver.findElement(validationErrorMessage).getText();
+	        } catch (NoSuchElementException e) {
+	            return "";
+	        }
+	    }
+	    
 }
