@@ -6,7 +6,7 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
 	    features = "src/test/java/features", // runs all features in that folder
 	    glue = "stepdefinations",
-	    tags="@tag",   
+	    
 	    plugin = {"pretty", "html:target/report.html"}
 	)
 public class TestRunner extends AbstractTestNGCucumberTests{

@@ -1,0 +1,8 @@
+utils\DriverFactory.class
+utils\RandomDataGenerator.class
+utils\ExtentTestManager.class
+pages\RegistrationPage.class
+utils\ScreenshotUtil.class
+utils\ExtentReportsUtil.class
+pages\MainPage.class
+utils\DriverManager.class

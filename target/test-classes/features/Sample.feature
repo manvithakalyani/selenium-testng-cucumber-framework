@@ -7,8 +7,7 @@ Background:
  
  
  Scenario: Sample tricentis page
-   Then close after landing on page
-    
+  
   
 
 Scenario Outline: Register new random user with gender <gender>
@@ -51,14 +50,14 @@ Examples:
   And user clicks the Register button
   Then error message "Please enter a valid email address." is displayed
   
-  @tag
+  
   Scenario: Registration fails with duplicate email
   When user clicks the Register menu
   And user is on tricentis registration page
   And user selects gender as "Male"
   And user enters first name as "John"
   And user enters last name as "Doe"
-  And user enters email as "abc@example.com"
+  And user enters email as "bgfdt@example.com"
   And user enters password as "Pass@123"
   And user enters confirm password as "Pass@123"
   And user clicks the Register button
