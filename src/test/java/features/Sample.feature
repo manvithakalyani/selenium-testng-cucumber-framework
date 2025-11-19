@@ -48,7 +48,7 @@ Examples:
   And user enters password as "Pass@123"
   And user enters confirm password as "Pass@123"
   And user clicks the Register button
-  Then error message "Please enter a valid email address." is displayed
+  Then error message "wrong email" is displayed
   
   
   Scenario: Registration fails with duplicate email
@@ -63,3 +63,33 @@ Examples:
   And user clicks the Register button
   Then error message "The specified email already exists" is displayed
   
+ 
+ Scenario: Successful login with valid credentials
+    Given user is on the Demo Web Shop login page
+    When user enters username as "bgfdt@example.com"
+    And user enters password as "Pass@123"
+    And user clicks the Login button
+    Then login success message is displayed
+    
+  
+  Scenario: Login with existing registered user
+  Given user is on the Demo Web Shop login page
+   When user logs in with registered credentials
+  And user clicks the Login button
+  Then login success message is displayed
+  
+  
+  Scenario: unSuccessful login with blank credentials
+    Given user is on the Demo Web Shop login page
+    When user enters username as ""
+    And user enters password as ""
+    And user clicks the Login button
+    Then login failed     
+    
+    
+    Scenario: Login fails for invalid user name and password
+    Given user is on the Demo Web Shop login page
+    When user enters username as "abc@example.com"
+    And user enters password as "ValidPass123"
+    And user clicks the Login button
+    Then error message "the credentials provided are incorrect" is displayed

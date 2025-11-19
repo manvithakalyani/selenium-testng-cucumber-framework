@@ -11,16 +11,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class WaitUtils {
-    private WebDriver driver;
+    private static final long DEFAULT_WAIT_TIME = 15;
+	private static WebDriver driver;
     private WebDriverWait wait;
 
     public WaitUtils(WebDriver driver, int timeoutSeconds) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+        WaitUtils.driver = driver;
+       
     }
 
-    public WebElement waitForVisibility(By locator) {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    public static WebElement waitForVisibility(By locator) {
+    	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_WAIT_TIME));
+    	    return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     public WebElement waitForPresence(By locator) {
@@ -34,4 +36,9 @@ public class WaitUtils {
     public boolean waitForInvisibility(By locator) {
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
+
+	public static void setDriver(WebDriver driver2) {
+		driver = driver2;
+		
+	}
 }

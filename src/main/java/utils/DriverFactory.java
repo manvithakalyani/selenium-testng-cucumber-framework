@@ -17,6 +17,7 @@ public class DriverFactory {
         // Add other browsers as needed
         if(driver != null) {
             driver.manage().window().maximize();
+            WaitUtils.setDriver(driver); 
         }
         return driver;
     }

@@ -21,6 +21,10 @@ public class RegisterSteps extends BaseClass  {
 	    RegistrationPage regPage = new RegistrationPage(driver);
 
 	    String firstName, lastName, email, password;
+	    public static String storedEmail;
+	    public static String storedPassword;
+
+
 	    private String generatedPassword;
 
 	    
@@ -58,6 +62,7 @@ public class RegisterSteps extends BaseClass  {
 	    public void user_enters_email(String input) {
 	        String valueToEnter = input.equals("placeholder") ? RandomDataGenerator.getRandomEmail() : input;
 	        regPage.enterEmail(valueToEnter);
+	        storedEmail = valueToEnter;  
 	    }
 
 	    @And("user enters password as {string}")
@@ -65,11 +70,13 @@ public class RegisterSteps extends BaseClass  {
 	        if (input.equals("placeholder")) {
 	            generatedPassword = RandomDataGenerator.getRandomPassword();
 	            regPage.enterPassword(generatedPassword);
+	            storedPassword = generatedPassword;  
 	            logInfo("Entered password as generated value: " + generatedPassword);
 
 	        } else {
 	            regPage.enterPassword(input);
 	            generatedPassword = input;
+	            storedPassword = input; 
 	            logInfo("Entered password as: " + input);
 	        }
 	    }
@@ -124,19 +131,16 @@ public class RegisterSteps extends BaseClass  {
 	    
 	    @Then("error message {string} is displayed")
 	    public void error_message_is_displayed(String expectedMessage) {
-	        String actualMessage = regPage.getErrorMessage().toLowerCase();
-	        String expectedLower = expectedMessage.toLowerCase();
+	    	  String actualMessage = regPage.getErrorMessage().toLowerCase();
+	    	    String expectedLower = expectedMessage.toLowerCase();
 
-	        // Accept either the expected message or "wrong email"
-	        if (!(actualMessage.contains(expectedLower) || actualMessage.contains("wrong email"))) {
-	        	logPass("Error message '" + expectedMessage + "' appeared as expected.");
-	            
-	        }
-	        else {
-	            logFail("Expected error message '" + expectedMessage + "' not found. Actual: " + actualMessage);
-	            throw new AssertionError("Expected error message containing: '" + expectedMessage + "' or 'Wrong email', but found: '" + actualMessage + "'");
-	        }
-	    }
+	    	    if (actualMessage.contains(expectedLower) || actualMessage.contains("wrong email")) {
+	    	        logPass("Error message '" + expectedMessage + "' appeared as expected.");
+	    	    } else {
+	    	        logFail("Expected error message '" + expectedMessage + "' not found. Actual: " + actualMessage);
+	    	        throw new AssertionError("Expected error message containing: '" + expectedMessage + "' or 'Wrong email', but found: '" + actualMessage + "'");
+	    	    }
+	    	}
 	    
 	   
 }
